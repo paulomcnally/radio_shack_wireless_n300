@@ -14,6 +14,7 @@ Firmware extraction and documentation for the **RadioShack Wireless N300M** rout
 | Web Server | Boa 0.94.14rc21 |
 | Flash | 8 MB |
 | RAM | 24 MB |
+| Serial Number | 2505002192600563 |
 | BusyBox | v1.13.4 |
 
 ## Firmware Files
