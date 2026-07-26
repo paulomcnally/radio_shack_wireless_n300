@@ -1,6 +1,10 @@
 # RadioShack Wireless N300M - Firmware Dump
 
+![RadioShack N300M](images/product.jpg)
+
 Firmware extraction and documentation for the **RadioShack Wireless N300M** router (Realtek RTL8196E).
+
+> Referencia: [RadioShack Nicaragua - Router 2505002](https://www.radioshackla.com/nicaragua/router-radioshack-2505002-300mbps-429893900004/p?srsltid=AfmBOop038gg5umMSfVqIMYUGuwCsSWUiIfhjwgMV9gyoGb-v0cjax3O)
 
 ## Router Specifications
 
