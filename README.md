@@ -7,7 +7,7 @@ Firmware extraction and documentation for the **RadioShack Wireless N300M** rout
 | Field | Value |
 |-------|-------|
 | Chipset | Realtek RTL8196E |
-| Model | 250500287519 (N300M Wireless AP/Router) |
+| Model | 2505002 (N300M Wireless AP/Router) |
 | Firmware Version | `RER4_A_v3411bN_2T2R_RAD_02_180301` |
 | SDK | Realtek SDK v3.4.11-r38403 |
 | Kernel | Linux 3.10.90 (MIPS) |
