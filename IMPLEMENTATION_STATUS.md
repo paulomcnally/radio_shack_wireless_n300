@@ -453,7 +453,41 @@ reboot
 
 ## Risk Assessment
 
-- **Breaking Risk:** Low
+- **Breaking Risk:** Medium
+- **Requires Recompilation:** Yes (firmware)
+- **Rollback Complexity:** Low
+
+---
+
+# PATCH-019 Implementation Status
+
+**Vulnerability:** VULN-019 - dnsmasq No DNSSEC
+**Severity:** MEDIUM
+**CWE:** CWE-350
+**CVSS:** 5.3
+**Issue:** #19
+**PR:** #40
+
+## Implementation Checklist
+
+- [x] Cross-compile dnsmasq 2.90 with DNSSEC support (nettle + gmp)
+- [x] Replace dnsmasq binary in firmware
+- [x] Enable dnssec=trust-anchor in dnsmasq.conf
+- [x] Add dnssec-check-unsigned directive
+- [x] Bind to specific interfaces with bind-interfaces
+- [x] Create /etc/dnsmasq.d/root.key trust anchor
+- [ ] Test: DNSSEC validation works
+- [ ] Test: DNS resolution still functions
+
+## Files to Modify
+
+- `/bin/dnsmasq` - Replaced with dnsmasq 2.90 compiled with DNSSEC
+- `/etc/dnsmasq.conf` - Added DNSSEC + bind-interfaces
+- `/etc/dnsmasq.d/root.key` - New DNSSEC trust anchor
+
+## Risk Assessment
+
+- **Breaking Risk:** Medium
 - **Requires Recompilation:** Yes (firmware)
 - **Rollback Complexity:** Low
 
