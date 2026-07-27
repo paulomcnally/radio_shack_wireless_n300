@@ -374,6 +374,43 @@ reboot
 
 ---
 
+# PATCH-012 Implementation Status
+
+**Vulnerability:** VULN-012 - No CSRF Protection
+**Severity:** HIGH
+**CWE:** CWE-352
+**CVSS:** 8.0
+**Issue:** #12
+**PR:** #33
+
+## Implementation Checklist
+
+- [x] Create CSRF token generator CGI (csrf.cgi)
+- [x] Create CSRF validation CGI (csrf-check.cgi)
+- [x] Add CSRF JavaScript to all HTML forms (csrf.js)
+- [x] Update lighttpd.conf to validate POST /boafrm/* tokens
+- [ ] Test: CSRF token generated on page load
+- [ ] Test: Token injected into all forms
+- [ ] Test: POST without token returns 403
+- [ ] Test: POST with mismatched token returns 403
+- [ ] Test: POST with valid token succeeds
+
+## Files to Create/Modify
+
+- `/web/cgi-bin/csrf.cgi` - Token generator and validator
+- `/web/cgi-bin/csrf-check.cgi` - POST validation endpoint
+- `/web/csrf.js` - JavaScript token injection
+- `/etc/lighttpd/lighttpd.conf` - Rewrite rules for CSRF
+- `/web/*.html` - Add csrf.js script tag
+
+## Risk Assessment
+
+- **Breaking Risk:** Medium
+- **Requires Recompilation:** No (CGI + JS only)
+- **Rollback Complexity:** Low
+
+---
+
 # PATCH-014 Implementation Status
 
 **Vulnerability:** VULN-014 - Outdated Boa Web Server
