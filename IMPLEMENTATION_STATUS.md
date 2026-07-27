@@ -388,8 +388,8 @@ reboot
 - [x] Create lighttpd configuration file
 - [x] Update rcS_32M startup script
 - [x] Create migration script
-- [ ] Cross-compile lighttpd for MIPS (requires toolchain)
-- [ ] Install lighttpd binary
+- [x] Cross-compile lighttpd for MIPS
+- [x] Install lighttpd binary
 - [ ] Test: lighttpd starts correctly
 - [ ] Test: CGI scripts work
 - [ ] Test: Security headers present
