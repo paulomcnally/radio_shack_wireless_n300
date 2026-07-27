@@ -147,3 +147,36 @@ reboot
 - **Breaking Risk:** Medium
 - **Requires Recompilation:** Yes (rootfs)
 - **Rollback Complexity:** Medium
+
+---
+
+# PATCH-005 Implementation Status
+
+**Vulnerability:** VULN-005 - Passwords Rendered in Plaintext HTML
+**Severity:** CRITICAL
+**CWE:** CWE-200
+**CVSS:** 8.6
+**Issue:** #5
+**PR:** #26
+
+## Implementation Checklist
+
+- [x] Change password fields from type="text" to type="password"
+- [x] Update routermain.html (pppPassword, pptpPassword, l2tpPassword, pskValue0/1, key0/1)
+- [x] Update extendermain.html (password2ghz, password5ghz, rpPassword)
+- [x] Update accesspointmain.html (password2ghz, password5ghz)
+- [ ] Test: All password fields display dots/bullets
+- [ ] Test: Form submission still works correctly
+- [ ] Test: No plaintext passwords visible in web UI
+
+## Files to Modify
+
+- `/www/main/routermain.html` - Password fields for PPPoP, PPTP, L2TP, WPA PSK, WEP
+- `/www/main/extendermain.html` - Password fields for extender mode
+- `/www/main/accesspointmain.html` - Password fields for AP mode
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (HTML files)
+- **Rollback Complexity:** Low
