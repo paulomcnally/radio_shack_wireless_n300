@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Upgrade</title>
+
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="css/upgrade.css" media="screen" />
+
+
+<script type="text/javascript" src="util_gw.js"></script> 
+<script>
+var MWJ_progBar = 0;
+var time=0;
+var delay_time=1000;
+var loop_num=0;
+var usb_update_img_enabled=<%getIndex("usb_update_img_enabled");%>;
+
+function show_usb_update_img()
+{
+  if(usb_update_img_enabled == 0)
+  { 
+	get_by_id("usb_update_img_ln").style.display = "none";
+	get_by_id("usb_update_img_nt").style.display = "none";
+	get_by_id("usb_update_img_bt").style.display = "none";
+	return false;
+  }
+  else
+  {
+	get_by_id("usb_update_img_ln").style.display = "";
+	get_by_id("usb_update_img_nt").style.display = "";
+	get_by_id("usb_update_img_bt").style.display = "";
+	return true;
+  }
+}
+
+
+function usb_img_upload(F)
+{
+  if(show_usb_update_img() == false)
+  {
+	alert("usb update image function is not enabled!");
+          return false;
+  }
+
+  F.submit();
+  show_div(true, "progress_div");   
+  progress();
+}
+
+function progress()
+{
+  if (loop_num == 3) {
+	alert("<% multilang("Update firmware failed!"); %>");
+	return false;
+  }
+  if (time < 1) 
+	time = time + 0.033;
+  else {
+	time = 0;
+	loop_num++;
+  }
+  setTimeout('progress()',delay_time);  
+  //myProgBar.setBar(time); 
+}
+
+function getFileType(str)
+{
+	if(str.value == "")
+		return;
+	var name = str.split(".");
+	var type = name[name.length-1];
+	return type;
+}
+function sendClicked(F)
+{
+    if(document.upload.file.value == ""){
+        document.upload.file.focus();
+        alert('<% multilang("File name can not be empty!"); %>');
+        return false;
+    }
+    var fileType = getFileType(document.upload.file.value);
+    if(fileType != "bin"){      	
+        document.upload.file.focus();
+        alert('Invalid file format !');
+        return false;
+    }
+    //F.submit();
+    document.upload.submit();
+    show_div(true, "progress_div");     
+    progress();
+}
+
+</script>
+
+</head>
+
+<body>
+    
+<form method="post" action="boafrm/formUpload" enctype="multipart/form-data" name="upload">
+
+	<!----Start Div ext_wireless Container----->
+    <div class="upgrade_container">
+    	<div id="upgrade_content">
+    <!----Start Div WiFi Header----->
+   	  <div class="upgrade_header">
+       	 <div id="upgrade_title"><% multilang("Upgrade"); %></div>
+        	<div id="upgrade_image">
+            	<img src="images/pageicon/upgrade.png">
+             </div>
+            <div id="upgrade_desc">
+              <p><% multilang("This page shows the current firmware version, and allows you to upgrade new firmware."); %><br>
+              <% multilang("It takes about 2 minute to complete the upgrading process, be patient and"); %> <strong><% multilang("DO NOT"); %></strong> <% multilang("power off the router during upgrading process."); %></p></div>
+     </div> <!----End Div WiFi Header----->
+    	
+        <div id="upgrade_table">
+        <!------------1st row------------->
+        <div id="table_title"><% multilang("Firmware Information"); %></div>
+    	<table class="block">
+            <tr>
+            	<td><% multilang("Current Firmware Version"); %> :</td>
+                <td><% getInfo("fwVersion"); %></td>
+            </tr>
+            <tr>
+            	<td><% multilang("Build Time"); %> :</td>
+                <td><% getInfo("buildTime"); %></td>
+            </tr>
+            <tr>
+            	<td>Patch Version :</td>
+                <td style="color:#090;font-weight:bold;">PATCHED-V2 (2026-07-26) - Security Fixes Applied</td>
+            </tr>
+            </table>
+   
+      <hr>
+
+    	<table class="block">
+            <tr>
+            	<th><% multilang("Select New Firmware"); %> :</th>
+                <td><div id="system_btn" class="system_btn" style="width:auto;"><input type="file" name="file" multiple class="custom-file-input"></div></td>
+            </tr>
+        </table>
+        
+        <div id="top_button_header" style="top:20px;">
+        <a href="javascript:sendClicked(this.form);"><div id="Save_btn" class="top_btn" style="width:auto;padding-right:10px; padding-left:10px;"><% multilang("Upgrade and Reboot"); %></div></a>
+        <input type=hidden value="Upload" name="send">
+        <input type="hidden" value="/upgrade.html" name="submit-url">
+            
+  </div> 
+  </div><!----End upgrade_Table------->
+ </div>
+</div><!----End Div upgrade_Container----->
+</form>
+</body>
+</html>                                		
