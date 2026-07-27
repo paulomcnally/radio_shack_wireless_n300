@@ -113,3 +113,37 @@ reboot
 - **Breaking Risk:** Medium
 - **Requires Recompilation:** Yes (boa.conf + binary)
 - **Rollback Complexity:** Medium
+
+---
+
+# PATCH-004 Implementation Status
+
+**Vulnerability:** VULN-004 - Private Key Hardcoded in Firmware
+**Severity:** CRITICAL
+**CWE:** CWE-321
+**CVSS:** 9.1
+**Issue:** #4
+**PR:** #25
+
+## Implementation Checklist
+
+- [x] Remove privateKey.key from firmware image
+- [x] Create key generation script using openssl
+- [x] Store keys in /var/etc/ssl/ with restrictive permissions
+- [x] Add factory reset cleanup
+- [ ] Test: Key generated at first boot
+- [ ] Test: Key unique per device
+- [ ] Test: Factory reset regenerates keys
+- [ ] Test: SSH/HTTPS uses new device-specific key
+
+## Files to Modify
+
+- `/etc/privateKey.key` - Remove from firmware
+- `/etc/init.d/generate_keys.sh` - New key generation script
+- `/etc/init.d/rcS_32M` - Call generate_keys.sh at boot
+
+## Risk Assessment
+
+- **Breaking Risk:** Medium
+- **Requires Recompilation:** Yes (rootfs)
+- **Rollback Complexity:** Medium
