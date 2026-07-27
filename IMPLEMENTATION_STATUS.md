@@ -7,9 +7,9 @@
 
 ## Implementation Checklist
 
-- [ ] Change boa.conf: User nobody, Group nogroup
-- [ ] Add SuexecOwner/SuexecGroup for CGI
-- [ ] Update init script: chown directories for nobody
+- [x] Change boa.conf: User nobody, Group nogroup
+- [x] Add SuexecOwner/SuexecGroup for CGI
+- [x] Update init script: chown directories for nobody
 - [ ] Test: Boa process runs as nobody
 - [ ] Test: Web UI pages load correctly
 - [ ] Test: CGI functionality works
