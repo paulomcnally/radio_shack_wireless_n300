@@ -459,30 +459,35 @@ reboot
 
 ---
 
-# PATCH-020 Implementation Status
+# PATCH-019 Implementation Status
 
-**Vulnerability:** VULN-020 - config.dat Credentials Exposed via HTTP
-**Severity:** CRITICAL
-**CWE:** CWE-200
-**CVSS:** 9.1
-**Issue:** #20
-**PR:** #41
+**Vulnerability:** VULN-019 - dnsmasq No DNSSEC
+**Severity:** MEDIUM
+**CWE:** CWE-350
+**CVSS:** 5.3
+**Issue:** #19
+**PR:** #40
 
 ## Implementation Checklist
 
-- [x] Remove /www/config.dat symlink
-- [x] Block direct HTTP access to config.dat in lighttpd.conf
-- [ ] Test: Direct access returns 403
-- [ ] Test: Web UI still functions
+- [x] Cross-compile dnsmasq 2.90 with DNSSEC support (nettle + gmp)
+- [x] Replace dnsmasq binary in firmware
+- [x] Enable dnssec=trust-anchor in dnsmasq.conf
+- [x] Add dnssec-check-unsigned directive
+- [x] Bind to specific interfaces with bind-interfaces
+- [x] Create /etc/dnsmasq.d/root.key trust anchor
+- [ ] Test: DNSSEC validation works
+- [ ] Test: DNS resolution still functions
 
 ## Files to Modify
 
-- `/web/config.dat` - Symlink removed
-- `/etc/lighttpd/lighttpd.conf` - Added access deny rule
+- `/bin/dnsmasq` - Replaced with dnsmasq 2.90 compiled with DNSSEC
+- `/etc/dnsmasq.conf` - Added DNSSEC + bind-interfaces
+- `/etc/dnsmasq.d/root.key` - New DNSSEC trust anchor
 
 ## Risk Assessment
 
-- **Breaking Risk:** Low
+- **Breaking Risk:** Medium
 - **Requires Recompilation:** Yes (firmware)
 - **Rollback Complexity:** Low
 
