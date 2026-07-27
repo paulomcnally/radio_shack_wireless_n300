@@ -278,3 +278,32 @@ reboot
 - **Breaking Risk:** Low
 - **Requires Recompilation:** Yes (HTML + firewall)
 - **Rollback Complexity:** Low
+
+---
+
+# PATCH-009 Implementation Status
+
+**Vulnerability:** VULN-009 - WPS Brute-Force
+**Severity:** HIGH
+**CWE:** CWE-307
+**CVSS:** 7.5
+**Issue:** #9
+**PR:** #30
+
+## Implementation Checklist
+
+- [x] Disable WPS by default in wscd.conf
+- [x] Add lockout parameters (max 3 attempts, 10 min cooldown)
+- [ ] Test: WPS is disabled after reflash
+- [ ] Test: Lockout triggers after 3 failed PIN attempts
+- [ ] Test: Lockout persists for 10 minutes
+
+## Files to Modify
+
+- `/etc/wscd.conf` - Disable WPS, add lockout params
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (wscd.conf)
+- **Rollback Complexity:** Low
