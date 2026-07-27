@@ -180,3 +180,39 @@ reboot
 - **Breaking Risk:** Low
 - **Requires Recompilation:** Yes (HTML files)
 - **Rollback Complexity:** Low
+
+---
+
+# PATCH-006 Implementation Status
+
+**Vulnerability:** VULN-006 - Firewall Disabled
+**Severity:** CRITICAL
+**CWE:** CWE-284
+**CVSS:** 8.1
+**Issue:** #6
+**PR:** #27
+
+## Implementation Checklist
+
+- [x] Rewrite firewall.sh with full iptables rule set
+- [x] Set default DROP policies for INPUT and FORWARD
+- [x] Allow loopback, established, ICMP, DHCP, DNS, HTTP from LAN
+- [x] Block WAN input, add NAT masquerade
+- [x] Add firewall startup to rcS_32M
+- [x] Create firewall.html web interface
+- [ ] Test: Firewall rules loaded at boot
+- [ ] Test: WAN cannot initiate connections
+- [ ] Test: LAN devices can access internet
+- [ ] Test: Web interface accessible from LAN
+
+## Files to Modify
+
+- `/bin/firewall.sh` - Rewrite with iptables rules
+- `/etc/init.d/rcS_32M` - Add firewall startup
+- `/www/firewall.html` - New firewall management page
+
+## Risk Assessment
+
+- **Breaking Risk:** Medium
+- **Requires Recompilation:** Yes (rootfs)
+- **Rollback Complexity:** Medium
