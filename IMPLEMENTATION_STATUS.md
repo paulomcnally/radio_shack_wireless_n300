@@ -398,7 +398,63 @@ reboot
 ## Risk Assessment
 
 - **Breaking Risk:** Medium
-- **Requires Recompilation:** Yes (vsftpd.conf)
+- **Requires Recompilation:** Yes (firmware)
+- **Rollback Complexity:** Low
+
+---
+
+# PATCH-017 Implementation Status
+
+**Vulnerability:** VULN-017 - TR-069 Remote Management Enabled by Default
+**Severity:** MEDIUM
+**CWE:** CWE-284
+**CVSS:** 5.3
+**Issue:** #17
+**PR:** #38
+
+## Implementation Checklist
+
+- [x] Add enable check in rcS_32M for TR-069
+- [x] TR-069 disabled by default (requires opt-in via web UI)
+- [x] Existing tr069.html already has toggle for enable/disable
+- [ ] Test: TR-069 disabled by default on boot
+- [ ] Test: TR-069 can be enabled via web UI
+
+## Files to Modify
+
+- `/etc/init.d/rcS_32M` - Added enable check for TR-069
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (rcS_32M)
+- **Rollback Complexity:** Low
+
+---
+
+# PATCH-018 Implementation Status
+
+**Vulnerability:** VULN-018 - uShare Telnet Control Port Exposed
+**Severity:** MEDIUM
+**CWE:** CWE-284
+**CVSS:** 5.3
+**Issue:** #18
+**PR:** #39
+
+## Implementation Checklist
+
+- [x] Set USHARE_TELNET_PORT=0 in ushare.conf
+- [ ] Test: Telnet port 1337 not listening
+- [ ] Test: uShare web UI (port 49200) still works
+
+## Files to Modify
+
+- `/etc/ushare.conf` - Set USHARE_TELNET_PORT=0
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (firmware)
 - **Rollback Complexity:** Low
 
 ---
