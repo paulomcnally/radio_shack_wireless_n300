@@ -411,6 +411,38 @@ reboot
 
 ---
 
+# PATCH-013 Implementation Status
+
+**Vulnerability:** VULN-013 - SNMP Plaintext Community Strings
+**Severity:** HIGH
+**CWE:** CWE-200
+**CVSS:** 7.5
+**Issue:** #13
+**PR:** #34
+
+## Implementation Checklist
+
+- [x] Generate random community strings on first boot
+- [x] Restrict SNMP access to localhost via iptables
+- [x] Mask community string fields in web UI (type=password)
+- [x] Add community initialization flag file
+- [ ] Test: SNMP not accessible from WAN
+- [ ] Test: Community strings are random, not defaults
+- [ ] Test: Web UI shows password fields
+
+## Files to Modify
+
+- `/bin/snmpd.sh` - Generate random strings, restrict to localhost
+- `/web/snmp.html` - Mask community string inputs
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (snmpd.sh + snmp.html)
+- **Rollback Complexity:** Low
+
+---
+
 # PATCH-014 Implementation Status
 
 **Vulnerability:** VULN-014 - Outdated Boa Web Server
