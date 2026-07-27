@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>System</title>
+
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="css/system.css" media="screen" />
+
+
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/bootstrap-toggle.min.css" media="screen" />
+<link href="css/bootstrap-toggle.css" rel="stylesheet">
+<link href="css/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet">
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap-toggle.js"></script>
+
+<!-- jjjre
+<script src="js/jquery-1.2.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+-->
+<script type="text/javascript" src="util_gw.js"> </script>
+    
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('input[type="radio"]').click(function(){
+            if($(this).attr("value")=="daily"){
+                $(".2").hide();
+                $(".daily").show();
+            }
+            if($(this).attr("value")=="weekly"){
+                $(".2").hide();
+                $(".weekly").show();
+            }
+       });
+    });
+</script>
+
+
+<script>
+function fileCheck()
+{
+	var oFile = document.getElementById('binary'); 
+    if(oFile.value == ""){ 
+		alert("please select a file!");
+		return false;
+	} 
+	//return true;
+    document.uploadConfig.submit();
+}
+
+function resetClick()
+{
+   if ( !confirm('<% multilang("Do you really want to reset the current settings to default?"); %>') ) {
+	return false;
+  }
+  else
+  {
+      document.getElementById('reset').value = '<% multilang("Reset"); %>';
+      document.getElementById('save').value = "";
+      document.saveConfig.submit();
+  }
+    
+}
+    
+function rebootClick()
+{
+   if ( !confirm('<% multilang("Do you really want to restart the system now?"); %>') ) {
+	return false;
+  }
+  else
+	return true;
+}
+
+function saveClick(url)
+{
+	var saveConfig= "<% getInfo("saveConfig"); %>";
+  if (verifyBrowser() == "ie4" ) {
+	window.location.href = url;
+	return false;
+  }
+  else
+  {
+      document.getElementById('save').value = "Save...";
+      document.saveConfig.submit();
+  }
+}
+    
+function init()
+{
+    if ( <% getIndex("autoRestartEnabled"); %> ) {
+        document.getElementById("autoRestartEnabled").checked = true;
+	}
+}
+
+function savechange()
+    {
+        return true;
+    }
+
+</script>
+
+    
+</head>
+
+<body onload="init();">
+    
+	<!----Start Div ext_wireless Container----->
+    <div class="system_container">
+    	<div id="system_content">
+    <!----Start Div WiFi Header----->
+   	  <div class="system_header">
+       	 <div id="title"><% multilang("System"); %></div>
+        	<div id="system_image">
+            	<img src="images/pageicon/system.png">
+             </div>
+            <div id="system_desc">
+        <% multilang("This page lets you save or restore the device's current settings. You can also reset your device to the factory defaults or reboot the device."); %>
+          </div>
+     </div> <!----End Div WiFi Header----->
+  
+     <div id="system_table">
+         <table class="block">
+     		
+         
+                 
+        
+         
+         <form method="post" action="boafrm/formUploadConfig" enctype="multipart/form-data" name="uploadConfig">
+             <input type="hidden" value="/system.html" name="submit-url">
+             <tr>
+            	<th><% multilang("Import  Settings"); %> :</th>
+                <td><div id="system_btn" class="system_btn" style="width:auto;">
+                    <input type="file" multiple class="custom-file-input" name="binary" id="binary" >
+                    </div></td>
+            </tr>
+            <tr>
+            	<th></th>
+                <td><a href="javascript:fileCheck();"><div class="system_btn" style="cursor:pointer;"><% multilang("Apply"); %></div></a></td>
+                <input type="hidden" value="Upload" name="load">
+            </tr>
+         </form>
+         
+         </table>
+         
+         
+         <form action=/boafrm/formSaveConfig method=POST name="saveConfig">    
+             <div id="system_table" style="margin-top:20px;">
+                 <table class="block">
+                     
+                     <tr>
+                         <th><% multilang("Export Settings"); %> :</th>
+                         <td><div class="system_btn" style="cursor:pointer;" onclick="saveClick('/config.dat')" ><% multilang("Save"); %></div></td>
+                         <p><input type="hidden" name="save" id="save" value=""></p>
+                     </tr>
+                     
+                     <tr>
+                         <th><% multilang("Reset To Factory Default Settings"); %>:</th>
+                         <td><a href="javascript:resetClick();"><div class="system_btn" style="cursor:pointer;"><% multilang("Reset"); %></div></a></td>
+                         <input type="hidden" id="reset" name="reset" value="" >
+                     </tr>
+                     
+                     <tr>
+            	       <th><% multilang("Reboot  Device"); %>:</th>
+                       <td><button type="submit" class="system_btn" style="cursor:pointer; height:36px; width:150px;" value="<% multilang("Reboot"); %>" name="reboot" onclick="return rebootClick()"><% multilang("Reboot"); %></button></td>
+                     </tr>                     
+                 </table>
+             </div>
+         </form>
+         <br>
+         <form action=/boafrm/formAutoRestart method=POST name="autoRestart"> 
+             <div>
+                <table class="block">
+                    <tr>
+                        <th><input type="checkbox" name="autoRestartEnabled" id="autoRestartEnabled" value="ON">
+                            <label for="autoRestartEnabled"><% multilang("Auto Restart"); %></label></th>
+                        <td></td>
+                    </tr>
+                 </table>
+             </div>
+             <table class="block">
+                <tr>
+                    <th style="width:200px;"></th>
+                    <td><% multilang("When this function is enabled, the Router will restart automatically in the period between 3:00 a.m. to 5:00 a.m. each day. Once the data traffic is less than 3KB/ s."); %></td>
+                 </tr>
+             </table>
+             <br>
+             <table>
+                <tr>
+                    <td>
+                        <button type="submit" value="<% multilang("Save"); %>" name="save" class="top_btn" style="cursor:pointer; width:auto;" onClick="return saveChange();"><% multilang("save and reboot later"); %></button>       
+                    </td>   
+                    <td>
+                        <button type="submit" value="<% multilang("Save & Apply"); %>" name="save_apply" class="top_btn" style="cursor:pointer; width:auto;" onClick="return saveChange();"><% multilang("save and reboot now"); %></button>
+                    </td>
+                </tr>
+           </table>
+             <input type="hidden" name="submit-url" value="/system.html">
+         </form>
+         
+         <!-- VULN-002 fix: Telnet toggle -->
+         <div style="margin-top:20px;">
+             <table class="block">
+                 <tr>
+                     <th>Telnet Access (Remote Shell):</th>
+                     <td>
+                         <select id="telnetToggle" onchange="toggleTelnet(this.value)" style="background:url(images/newarrow.png) no-repeat 100% center;">
+                             <option value="disable" <% [ -f /var/etc/telnet_enabled ] || echo "selected" %>>Disabled (Recommended)</option>
+                             <option value="enable" <% [ -f /var/etc/telnet_enabled ] && echo "selected" %>>Enabled (Not Recommended)</option>
+                         </select>
+                     </td>
+                 </tr>
+                 <tr>
+                     <th></th>
+                     <td style="color:#F00; font-size:11px;">
+                         WARNING: Telnet transmits data in cleartext. Use SSH instead when possible.
+                     </td>
+                 </tr>
+             </table>
+         </div>
+         <script>
+         function toggleTelnet(action) {
+             if (action == 'enable') {
+                 if (!confirm('WARNING: Telnet transmits all data in cleartext. This is a security risk. Continue?')) {
+                     document.getElementById('telnetToggle').value = 'disable';
+                     return;
+                 }
+             }
+             window.location = '/cgi-bin/telnet.cgi?ACTION=' + action;
+         }
+         </script>
+          
+     
+     <!--jjjre
+     <div id="system_table" style="margin-top:20px;">
+           <table class="block">
+            <tr>
+            	<th>Enable Automatic System Reboot:</th>
+                <td><input type="checkbox" data-toggle="toggle" data-on="<% multilang("ON"); %>" data-off="<% multilang("OFF"); %>" id="aa"></td>
+            </tr>
+           </table>
+          
+           <table class="block" style="margin-top:10px;">
+            <tr>
+            	<th></th>
+                <td>
+                    <input type="radio" id="r1" name="rr" value="daily" checked />
+                    <label for="r1"><span></span>  Daily</label>
+                    <input type="radio" id="r2" name="rr" value="weekly"/>
+                    <label for="r2"><span></span> Weekly</label>
+                    <select style="width:80px;background:url(images/newarrow.png)  no-repeat 100% center;" class="input-style">
+                      <option value="0" selected>00:00</option>
+                      <option value="1">01:00</option>
+                      <option value="2">02:00</option>
+                      <option value="3">03:00</option>
+                      <option value="4">04:00</option>
+                      <option value="5">05:00</option>
+                      <option value="6">06:00</option>
+                      <option value="7">07:00</option>
+                      <option value="8">08:00</option>
+                      <option value="9">09:00</option>
+                      <option value="10">10:00</option>
+                      <option value="11">11:00</option>
+                      <option value="12">12:00</option>
+                      <option value="13">13:00</option>
+                      <option value="14">14:00</option>
+                      <option value="15">15:00</option>
+                      <option value="16">16:00</option>
+                      <option value="17">17:00</option>
+                      <option value="18">18:00</option>
+                      <option value="19">19:00</option>
+                      <option value="20">20:00</option>
+                      <option value="21">21:00</option>
+                      <option value="22">22:00</option>
+                      <option value="23">23:00</option>
+                </select>
+                
+                	<select style="width:80px;background:url(images/newarrow.png)  no-repeat 100% center; display:none;" class="input-style weekly 2">
+                      <option value="sun" selected>Sun</option>
+                      <option value="mon">Mon</option>
+                      <option value="tues">Tues</option>
+                      <option value="wed">Wed</option>
+                      <option value="thurs">Thurs</option>
+                      <option value="fri">Fri</option>
+                      <option value="sat">Sat</option>
+                </select>                
+                </td>
+            </tr>
+            <tr>
+            	<th></th>
+                <td><a href="reboot-system.html"><div class="system_btn" style="cursor:pointer;">Apply</div></a></td>
+            </tr>
+     </table>
+         
+     </div>
+     -->
+         
+     </div>	<!----End system_table----->
+   </div>	<!----End system_content----->
+</div><!----End Div system_Container----->
+    
+</body>
+</html>                                		
