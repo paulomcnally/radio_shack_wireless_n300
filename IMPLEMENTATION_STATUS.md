@@ -52,16 +52,34 @@ reboot
 5. Access `http://192.168.1.254/force_password.html`
 6. Set new password
 
+---
+
+# PATCH-002 Implementation Status
+
+**Vulnerability:** VULN-002 - Telnet Unconditionally Enabled
+**Severity:** CRITICAL
+**CWE:** CWE-250 / CWE-319
+**Issue:** #2
+
+## Implementation Checklist
+
+- [x] Remove unconditional `telnetd&` from rcS_32M
+- [x] Add conditional telnet startup based on config file
+- [x] Create web UI toggle for telnet enable/disable
+- [x] Add CGI handler for telnet toggle
+- [x] Default telnet to disabled
+- [ ] Test: Telnet port 23 not listening after boot
+- [ ] Test: Telnet toggle works in web UI
+- [ ] Test: Telnet remains disabled after reboot
+
+## Files to Modify
+
+- `/etc/init.d/rcS_32M` - Remove unconditional telnetd
+- `/www/cgi-bin/telnet.cgi` - New toggle handler
+- `/www/system.html` - Add telnet toggle UI
+
 ## Risk Assessment
 
 - **Breaking Risk:** Low
 - **Requires Recompilation:** Yes (rootfs) or run on live device
-- **Rollback Complexity:** Low (restore from /etc/shadow.bak)
-
-## Rollback
-
-```bash
-# Restore original shadow file
-cp /etc/shadow.bak /etc/shadow
-reboot
-```
+- **Rollback Complexity:** Low
