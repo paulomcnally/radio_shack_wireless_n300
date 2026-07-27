@@ -535,3 +535,32 @@ reboot
 - **Breaking Risk:** Low
 - **Requires Recompilation:** Yes (rcS_32M)
 - **Rollback Complexity:** Low
+
+---
+
+# PATCH-016 Implementation Status
+
+**Vulnerability:** VULN-016 - jQuery XSS Vulnerabilities
+**Severity:** MEDIUM
+**CWE:** CWE-79
+**CVSS:** 6.1
+**Issue:** #16
+**PR:** #37
+
+## Implementation Checklist
+
+- [x] Replace jQuery 1.11.1 with 3.7.1
+- [x] Update all HTML references from old jQuery versions to jquery.min.js
+- [ ] Test: All web UI pages load correctly
+- [ ] Test: AJAX forms still work
+
+## Files to Modify
+
+- `/web/js/jquery.min.js` - Updated to jQuery 3.7.1
+- `/web/*.html` - Updated jQuery references
+
+## Risk Assessment
+
+- **Breaking Risk:** Medium
+- **Requires Recompilation:** Yes (firmware)
+- **Rollback Complexity:** Low
