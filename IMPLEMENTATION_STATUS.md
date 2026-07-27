@@ -371,3 +371,37 @@ reboot
 - **Breaking Risk:** Medium
 - **Requires Recompilation:** Yes (vsftpd.conf)
 - **Rollback Complexity:** Low
+
+---
+
+# PATCH-014 Implementation Status
+
+**Vulnerability:** VULN-014 - Outdated Boa Web Server
+**Severity:** HIGH
+**CWE:** CWE-1104
+**CVSS:** 7.5
+**Issue:** #14
+**PR:** #35
+
+## Implementation Checklist
+
+- [x] Create lighttpd configuration file
+- [x] Update rcS_32M startup script
+- [x] Create migration script
+- [x] Cross-compile lighttpd for MIPS
+- [x] Install lighttpd binary
+- [ ] Test: lighttpd starts correctly
+- [ ] Test: CGI scripts work
+- [ ] Test: Security headers present
+
+## Files to Modify
+
+- `/etc/lighttpd/lighttpd.conf` - New lighttpd config
+- `/etc/init.d/rcS_32M` - Use lighttpd instead of Boa
+- `/etc/lighttpd/migrate.sh` - Migration script
+
+## Risk Assessment
+
+- **Breaking Risk:** High
+- **Requires Recompilation:** Yes (lighttpd binary)
+- **Rollback Complexity:** Medium (restore Boa binary)
