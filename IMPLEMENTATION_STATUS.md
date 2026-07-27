@@ -525,7 +525,162 @@ reboot
 ## Risk Assessment
 
 - **Breaking Risk:** Medium
-- **Requires Recompilation:** No (CGI + JS only)
+- **Requires Recompilation:** Yes (firmware)
+- **Rollback Complexity:** Low
+
+---
+
+# PATCH-017 Implementation Status
+
+**Vulnerability:** VULN-017 - TR-069 Enabled by Default
+**Severity:** HIGH
+**CWE:** CWE-16
+**CVSS:** 7.5
+**Issue:** #17
+**PR:** #38
+
+## Implementation Checklist
+
+- [x] Add ENABLE_CWMP check in rcS_32M
+- [x] Default to disabled (uci get cwmp.cwmp.autoexec defaults to 0)
+- [x] Web UI toggle already exists in tr069.html
+- [ ] Test: TR-069 disabled by default after flash
+
+## Files to Modify
+
+- `/etc/init.d/rcS_32M` - Added CWMP enable check
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (firmware)
+- **Rollback Complexity:** Low
+
+---
+
+# PATCH-018 Implementation Status
+
+**Vulnerability:** VULN-018 - uShare Telnet Port 1337
+**Severity:** LOW
+**CWE:** CWE-319
+**CVSS:** 3.1
+**Issue:** #18
+**PR:** #39
+
+## Implementation Checklist
+
+- [x] Set USHARE_TELNET_PORT=0 in /etc/ushare.conf
+- [ ] Test: Telnet port not accessible on port 1337
+
+## Files to Modify
+
+- `/etc/ushare.conf` - Telnet port disabled
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (firmware)
+- **Rollback Complexity:** Low
+
+---
+
+# PATCH-019 Implementation Status
+
+**Vulnerability:** VULN-019 - DNSSEC Not Supported
+**Severity:** HIGH
+**CWE:** CWE-319
+**CVSS:** 7.5
+**Issue:** #19
+**PR:** #40
+
+## Implementation Checklist
+
+- [x] Cross-compiled dnsmasq 2.90 with DNSSEC
+- [x] Static linked GMP 6.3.0 + Nettle 3.10.2
+- [x] Added dnssec=trust-anchor=/etc/dnsmasq.d/root.key
+- [x] Added dnssec-check-unsigned
+- [x] Added bind-interfaces
+- [x] Configured upstream DNS 1.1.1.1/1.0.0.1/8.8.8.8
+- [x] Created root.key trust anchor
+- [ ] Test: DNSSEC validation works
+
+## Files to Modify
+
+- `/bin/dnsmasq` - Replaced with dnsmasq 2.90 + DNSSEC
+- `/etc/dnsmasq.conf` - DNSSEC config added
+- `/etc/dnsmasq.d/root.key` - Trust anchor created
+
+## Risk Assessment
+
+- **Breaking Risk:** Medium
+- **Requires Recompilation:** Yes (firmware)
+- **Rollback Complexity:** Low
+
+---
+
+# PATCH-020 Implementation Status
+
+**Vulnerability:** VULN-020 - config.dat Credentials Exposed via HTTP
+**Severity:** CRITICAL
+**CWE:** CWE-200
+**CVSS:** 9.1
+**Issue:** #20
+**PR:** #41
+
+## Implementation Checklist
+
+- [x] Remove /www/config.dat symlink
+- [x] Block direct HTTP access to config.dat in lighttpd.conf
+- [ ] Test: Direct access returns 403
+- [ ] Test: Web UI still functions
+
+## Files to Modify
+
+- `/web/config.dat` - Symlink removed
+- `/etc/lighttpd/lighttpd.conf` - Added access deny rule
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (firmware)
+- **Rollback Complexity:** Low
+
+---
+
+# PATCH-021 Implementation Status
+
+**Vulnerability:** VULN-021 - WiFi Password Stored in Plaintext
+**Severity:** HIGH
+**CWE:** CWE-312
+**CVSS:** 7.5
+**Issue:** #21
+**PR:** #42
+
+## Implementation Checklist
+
+- [x] config.dat symlink removed (PATCH-020)
+- [x] HTTP access blocked (PATCH-020)
+- [x] CSRF protection on form submissions (PATCH-012)
+- [x] Password field already type="password" in wlsecurity_all.html
+- [ ] Encryption at rest (requires CGI binary modification)
+- [ ] Test: Password masked in web UI
+
+## Files to Modify
+
+- `/web/wlsecurity_all.html` - Password field already type="password"
+- `/web/config.dat` - Symlink removed (PATCH-020)
+
+## Notes
+
+- Full encryption at rest requires modifying compiled Realtek CGI binary
+- Plaintext stored in /var/config.dat (not in squashfs)
+- CSRF protection prevents unauthorized form submissions
+- Web UI already masks password input field
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (firmware)
 - **Rollback Complexity:** Low
 
 ---
