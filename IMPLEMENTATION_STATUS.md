@@ -247,3 +247,34 @@ reboot
 - **Breaking Risk:** Medium
 - **Requires Recompilation:** Yes (rootfs)
 - **Rollback Complexity:** Medium
+
+---
+
+# PATCH-008 Implementation Status
+
+**Vulnerability:** VULN-008 - Telnet Exposed on WAN
+**Severity:** CRITICAL
+**CWE:** CWE-284
+**CVSS:** 9.8
+**Issue:** #8
+**PR:** #29
+
+## Implementation Checklist
+
+- [x] Remove WanTelnetEnable checkbox from internet.html
+- [x] Remove JavaScript validation for WanTelnetEnable
+- [x] Add iptables rule to block WAN port 23
+- [ ] Test: WAN Telnet option no longer visible in web UI
+- [ ] Test: Port 23 not accessible from WAN
+- [ ] Test: Telnet still accessible from LAN
+
+## Files to Modify
+
+- `/www/internet.html` - Remove WanTelnetEnable UI elements
+- `/bin/firewall.sh` - Add WAN port 23 block rule
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (HTML + firewall)
+- **Rollback Complexity:** Low
