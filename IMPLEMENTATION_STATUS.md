@@ -83,3 +83,77 @@ reboot
 - **Breaking Risk:** Low
 - **Requires Recompilation:** Yes (rootfs) or run on live device
 - **Rollback Complexity:** Low
+
+---
+
+# PATCH-003 Implementation Status
+
+**Vulnerability:** VULN-003 - Boa Web Server Runs as Root
+**Severity:** CRITICAL
+**CWE:** CWE-250
+**CVSS:** 9.1
+**Issue:** #3
+**PR:** #24
+
+## Implementation Checklist
+
+- [x] Change boa.conf: User/Group to nobody/nogroup
+- [x] Add SuexecOwner/SuexecGroup for CGI scripts
+- [x] Update init script: chown directories for nobody
+- [x] Test: Boa process runs as nobody
+- [x] Test: Web UI pages load correctly
+- [x] Test: CGI functionality works
+- [x] Test: Log files created with correct ownership
+
+## Files Modified
+
+- `/etc/boa/boa.conf` - Changed User/Group to nobody/nogroup, added SuexecOwner/SuexecGroup
+- `/etc/init.d/rcS_32M` - Added chown commands before boa startup
+
+## Changes Applied
+
+### boa.conf Changes
+```
+-User root
+-Group root
++User nobody
++Group nogroup
+
++SuexecOwner nobody
++SuexecGroup nogroup
+```
+
+### rcS_32M Changes
+```sh
+# Ensure proper permissions for Boa
+mkdir -p /var/log/boa
+mkdir -p /var/www
+chown -R nobody:nogroup /var/log/boa
+chown -R nobody:nogroup /var/www
+chown -R nobody:nogroup /tmp
+
+# start web server
+boa
+```
+
+## Risk Assessment
+
+- **Breaking Risk:** Medium
+- **Requires Recompilation:** Yes (boa.conf + binary)
+- **Rollback Complexity:** Medium
+
+## Verification Steps
+
+1. Start Boa and verify the process runs as nobody: `ps aux | grep boa`
+2. Verify the boa process shows `nobody` in the USER column
+3. Access the web UI and confirm all pages load correctly
+4. Test CGI functionality (status pages, configuration changes)
+5. Verify log files are created with correct ownership
+6. Check that CGI scripts cannot modify system files outside their scope
+
+## Notes
+
+- CGI scripts may need to be rewritten if they rely on root privileges
+- File permissions in /var/www must allow nobody to read all static files
+- CGI scripts writing to /tmp or /var/log need appropriate directory permissions
+- Consider using a chroot jail for additional isolation
