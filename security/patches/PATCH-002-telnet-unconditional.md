@@ -4,6 +4,7 @@
 **Complexity:** Low
 **Requires Recompilation:** Yes (init script)
 **Risk Level:** Low (risk of breaking functionality)
+**Status:** IMPLEMENTED
 
 ## Recommended Fix
 
@@ -70,3 +71,24 @@ Remove the unconditional `telnetd&` startup from the init script. Instead, make 
 - SSH should be the preferred remote access method
 - If telnet must remain enabled, add a warning in the UI about security risks
 - Consider adding IP-based access control as an additional restriction
+
+## Implementation Notes
+
+**Date:** 2026-07-26
+**Implemented by:** opencode (AI assistant)
+
+### Files Modified
+1. `/etc/init.d/rcS_32M` - Replaced unconditional `telnetd&` with conditional block
+2. `/www/cgi-bin/telnet.cgi` - New CGI script for telnet toggle
+3. `/www/system.html` - Added telnet toggle UI with security warning
+
+### Patched Firmware
+- `firmware/mtd1_patched.bin` - Patched rootfs (SquashFS 4.0, XZ compressed)
+- `firmware/firmware_RTL8196E_N300M_patched.bin` - Complete patched firmware image
+
+### Security Improvements
+- Telnet daemon is now **disabled by default** on boot
+- Telnet can only be enabled via explicit user action in web UI
+- Security warning displayed when enabling telnet
+- Telnet status persisted in `/var/etc/telnet_enabled` (RAM-based, resets on reboot)
+- Logger messages added for audit trail
