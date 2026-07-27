@@ -453,6 +453,35 @@ reboot
 
 ## Risk Assessment
 
+- **Breaking Risk:** Medium
+- **Requires Recompilation:** Yes (firmware)
+- **Rollback Complexity:** Low
+
+---
+
+# PATCH-020 Implementation Status
+
+**Vulnerability:** VULN-020 - config.dat Credentials Exposed via HTTP
+**Severity:** CRITICAL
+**CWE:** CWE-200
+**CVSS:** 9.1
+**Issue:** #20
+**PR:** #41
+
+## Implementation Checklist
+
+- [x] Remove /www/config.dat symlink
+- [x] Block direct HTTP access to config.dat in lighttpd.conf
+- [ ] Test: Direct access returns 403
+- [ ] Test: Web UI still functions
+
+## Files to Modify
+
+- `/web/config.dat` - Symlink removed
+- `/etc/lighttpd/lighttpd.conf` - Added access deny rule
+
+## Risk Assessment
+
 - **Breaking Risk:** Low
 - **Requires Recompilation:** Yes (firmware)
 - **Rollback Complexity:** Low
