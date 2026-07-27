@@ -474,3 +474,35 @@ reboot
 - **Breaking Risk:** High
 - **Requires Recompilation:** Yes (lighttpd binary)
 - **Rollback Complexity:** Medium (restore Boa binary)
+
+---
+
+# PATCH-015 Implementation Status
+
+**Vulnerability:** VULN-015 - Expired TLS Certificate Hardcoded
+**Severity:** HIGH
+**CWE:** CWE-295
+**CVSS:** 7.5
+**Issue:** #15
+**PR:** #36
+
+## Implementation Checklist
+
+- [x] Remove expired certificate from firmware
+- [x] Add cert generation script to rcS_32M (first boot)
+- [x] Use device MAC for unique CN
+- [x] 10-year validity, 2048-bit RSA
+- [x] Restrict key permissions (chmod 600)
+- [ ] Test: Cert generated on first boot
+- [ ] Test: Cert is unique per device
+
+## Files to Modify
+
+- `/etc/certificate.crt` - Removed (expired cert)
+- `/etc/init.d/rcS_32M` - Added cert generation script
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (rcS_32M)
+- **Rollback Complexity:** Low
