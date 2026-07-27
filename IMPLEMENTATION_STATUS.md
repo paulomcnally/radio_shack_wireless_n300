@@ -111,8 +111,39 @@ reboot
 ## Risk Assessment
 
 - **Breaking Risk:** Medium
-- **Requires Recompilation:** Yes (boa.conf + binary)
+- **Requires Recompilation:** Yes (rootfs)
 - **Rollback Complexity:** Medium
+
+---
+
+# PATCH-007 Implementation Status
+
+**Vulnerability:** VULN-007 - Console Shell Without Authentication
+**Severity:** CRITICAL
+**CWE:** CWE-306
+**CVSS:** 6.8
+**Issue:** #7
+**PR:** #28
+
+## Implementation Checklist
+
+- [x] Modify inittab to use /bin/login instead of -/bin/sh
+- [x] Ensure root password exists in /etc/shadow
+- [ ] Test: Serial console shows login prompt
+- [ ] Test: Cannot login without credentials
+- [ ] Test: Root login works with password
+- [ ] Test: Change persists after reboot
+
+## Files to Modify
+
+- `/etc/inittab` - Change respawn to use /bin/login
+- `/etc/shadow` - Ensure root has valid password hash
+
+## Risk Assessment
+
+- **Breaking Risk:** Low
+- **Requires Recompilation:** Yes (inittab)
+- **Rollback Complexity:** Low
 
 ---
 
